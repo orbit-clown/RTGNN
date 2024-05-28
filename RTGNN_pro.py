@@ -10,7 +10,7 @@ import torch.nn.functional as F
 import os
 import numpy as np
 
-parser = argparse.ArgumentParser(description='PyTorch HTGNN_pro')
+parser = argparse.ArgumentParser(description='PyTorch RTGNN_pro')
 parser.add_argument('--win_size', type=int, default=30, help='window size')
 parser.add_argument('--dataset_name', type=str, default='hs300', help='dataset name')
 parser.add_argument('--horizon', type=int, default=1, help='prediction horizon')
@@ -317,10 +317,10 @@ def main():
     combined_df = pd.concat([dates.reset_index(drop=True), hold_df], axis=1)
     cols = ['dt'] + [f'kdcode{i}' for i in range(1, select_num+1)]
     combined_df.columns = cols
-    combined_df.to_csv(f'./data/hold_HTGNNpro_{args.dataset_name}_{args.horizon}_{mean_rankIC}.csv', index=False)
+    combined_df.to_csv(f'./data/hold_RTGNNpro_{args.dataset_name}_{args.horizon}_{mean_rankIC}.csv', index=False)
 
     stock_df = pd.read_csv(f'./dataset/{args.dataset_name}_1.csv')
-    hold_df = pd.read_csv(f'./data/hold_HTGNNpro_{args.dataset_name}_{args.horizon}_{mean_rankIC}.csv')
+    hold_df = pd.read_csv(f'./data/hold_RTGNNpro_{args.dataset_name}_{args.horizon}_{mean_rankIC}.csv')
 
     output = []
     # 迭代hold数据
@@ -335,9 +335,9 @@ def main():
     # 创建DataFrame并写入文件
     output_df = pd.DataFrame(output, columns=['datetime', 'daily_return'])
 
-    output_df.to_csv(f'./data/return_HTGNNpro_{args.dataset_name}_{args.horizon}_{mean_rankIC}.csv', index=False)
+    output_df.to_csv(f'./data/return_RTGNNpro_{args.dataset_name}_{args.horizon}_{mean_rankIC}.csv', index=False)
 
-    df_return=pd.read_csv(f'./data/return_HTGNNpro_{args.dataset_name}_{args.horizon}_{mean_rankIC}.csv')
+    df_return=pd.read_csv(f'./data/return_RTGNNpro_{args.dataset_name}_{args.horizon}_{mean_rankIC}.csv')
     index_df=pd.read_csv(f'./data/index_{args.dataset_name}.csv')
 
     portfolio_df_performance = df_return.set_index(['datetime'])
@@ -366,8 +366,8 @@ def main():
 
     print("portfolios:",portfolio)
 
-    output_df.to_csv(f'./data/return_HTGNNpro_{args.dataset_name}_{args.horizon}_{portfolio}.csv', index=False)
-    torch.save(model, f=f"models/HTGNNpro_{args.dataset_name}_{args.horizon}_{portfolio}.pth")
+    output_df.to_csv(f'./data/return_RTGNNpro_{args.dataset_name}_{args.horizon}_{portfolio}.csv', index=False)
+    torch.save(model, f=f"models/RTGNNpro_{args.dataset_name}_{args.horizon}_{portfolio}.pth")
     return portfolio
 
 if __name__=="__main__":
